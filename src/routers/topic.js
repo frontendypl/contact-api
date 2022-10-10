@@ -6,9 +6,11 @@ const Answer = require('../models/Answer')
 
 const router = new express.Router()
 
-router.post('/topics',async (req, res)=>{
+router.get('/test',(req,res)=>{
+    return res.send('app works')
+})
 
-    console.log({req})
+router.post('/topics',async (req, res)=>{
 
     const topic = new Topic({
         ...req.body
