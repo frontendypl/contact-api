@@ -46,4 +46,51 @@ router.get('/topics/:id/chat', async (req, res) => {
 
 })
 
+/**
+ *  TODO: Add Auth Token
+ */
+// router.get('/topics', async (req, res)=>{
+//     try{
+//         const topics = await Topic.find()
+//
+//         return res.send(topics)
+//     }catch (e) {
+//
+//     }
+// })
+
+/**
+ *  TODO: Add Auth Token
+ */
+router.get('/chats', async (req, res)=>{
+    try{
+        const topics = await Topic.find().sort({createdAt: -1})
+        const messages = await Message.find()
+        const answers = await Answer.find()
+
+        const data = {}
+
+        topics.forEach(({_id, source,createdAt})=>{
+
+            data[_id] = {
+                messages: [...messages.filter(el=>el.topic.toString() === _id.toString()),...answers.filter(el=>el.topic.toString() === _id.toString())]
+                    .sort(function compare(a, b) {
+                        const dateA = new Date(a.createdAt);
+                        const dateB = new Date(b.createdAt);
+                        return dateA - dateB;
+                    }),
+                source,
+                createdAt,
+                _id
+            }
+
+        })
+
+        return res.send(data)
+    }catch (e) {
+
+    }
+})
+
+
 module.exports = router
