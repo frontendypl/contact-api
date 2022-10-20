@@ -6,6 +6,8 @@ const Answer = require('../models/Answer')
 
 const router = new express.Router()
 
+const auth = require('../middleware/auth')
+
 router.get('/test',(req,res)=>{
     return res.send('app works')
 })
@@ -62,7 +64,7 @@ router.get('/topics/:id/chat', async (req, res) => {
 /**
  *  TODO: Add Auth Token
  */
-router.get('/chats', async (req, res)=>{
+router.get('/chats', auth, async (req, res)=>{
     try{
         const topics = await Topic.find().sort({createdAt: -1})
         const messages = await Message.find()

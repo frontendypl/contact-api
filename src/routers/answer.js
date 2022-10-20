@@ -4,11 +4,9 @@ const Answer =require('../models/Answer')
 
 const router = new express.Router()
 
-router.post('/answers',async (req, res)=>{
+const auth = require('../middleware/auth')
 
-    if(req.body.secret !== 'majkel00'){
-        return res.status(400).send('Unauthorized')
-    }
+router.post('/answers', auth, async (req, res)=>{
 
     const answer = new Answer({
         ...req.body
